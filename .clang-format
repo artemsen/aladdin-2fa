@@ -1,0 +1,34 @@
+---
+Language: Cpp
+BasedOnStyle: WebKit
+ColumnLimit: 80
+
+AlignAfterOpenBracket: Align
+AlignArrayOfStructures: Left
+AlignConsecutiveMacros: true
+AlignEscapedNewlines: Left
+AlignTrailingComments: true
+
+AllowShortBlocksOnASingleLine: Empty
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortLambdasOnASingleLine: Empty
+
+ForEachMacros: [list_for_each, list_for_each_back]
+SpaceBeforeParens: ControlStatementsExceptForEachMacros
+
+BreakBeforeBinaryOperators: None
+IndentCaseLabels: true
+InsertBraces: true
+
+SortIncludes: true
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex:    '^".*\.h"'
+    Priority: 1
+  - Regex:    '^<.*\.h>'
+    Priority: 2
+  - Regex:    '^<.*'
+    Priority: 3
+  - Regex:    '.*'
+    Priority: 4
