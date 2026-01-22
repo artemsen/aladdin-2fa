@@ -34,7 +34,6 @@ struct totp {
 
     /**
      * Generate TOTP code.
-     * @param encoded source string to decode
      * @return TOTP code for current time
      * @throws std::runtime_error on errors
      */

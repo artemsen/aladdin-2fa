@@ -106,8 +106,14 @@ struct jas_ticket {
 
         // get IV and encrypted data
         std::vector<std::string> otp_parts;
-        for (const auto& view : std::views::split(mobileotp, '.')) {
-            otp_parts.push_back(std::string(view.begin(), view.end()));
+        size_t start = 0, end;
+        while ((end = mobileotp.find('.', start)) != std::string::npos) {
+            otp_parts.push_back(mobileotp.substr(start, end - start));
+            start = end + 1;
+        }
+        otp_parts.push_back(mobileotp.substr(start));
+        if (otp_parts.size() < 2) {
+            throw std::runtime_error("Incorrect OTP response format");
         }
         const std::vector<uint8_t> iv = base64_decode(otp_parts[0]);
         const std::vector<uint8_t> crypt = base64_decode(otp_parts[1]);
