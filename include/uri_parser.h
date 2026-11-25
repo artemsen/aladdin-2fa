@@ -122,8 +122,13 @@ std::tuple<uri::Authority, uri::Error, uri::string_view_type> parse_authority(ur
     if (!auth_string.empty() && auth_string[0] != '[') {
         pos = auth_string.find(':');
         if (pos != uri::npos) {
-            authority.port = std::strtol(&auth_string[pos + 1], &end_ptr, 10);
-            if (end_ptr != &*auth_string.end()) {
+            // Copy the port part to a std::string first: indexing the
+            // string_view directly (auth_string[pos + 1]) reads past the end
+            // when the ':' is the last character (empty port, e.g. "host:"),
+            // triggering an out-of-bounds assertion in std::string_view.
+            const std::string port_str(auth_string.substr(pos + 1));
+            authority.port = std::strtol(port_str.c_str(), &end_ptr, 10);
+            if (end_ptr != port_str.c_str() + port_str.size()) {
                 return { authority, uri::Error::InvalidPort, auth_string };
             }
         }
